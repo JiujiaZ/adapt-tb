@@ -3,7 +3,7 @@ from copy import copy
 
 # remove redundant info from preceeding scripts
 # Fix A(N) scaling externally
-# check ss after         # determine detection outcome: input needs to be o/1, redudant functions
+
 
 class MarkovChain:
     """
@@ -189,29 +189,17 @@ class ScreenSites:
         # determine detection outcome
         N = summary[screen_sites, :].sum(axis = 0).astype('int') # effective attandance
         for i in np.arange(self.n_residential):
-            self.residents.step(i, N[i])
+            if N >= 1:
+                self.residents.step(i, 1)
+            else:
+                self.residents.step(i, 0)
         for n in screen_sites:
-
             observable = stochastic_sample(summary[n], self.residents.current_states)
             observable = observable.sum(axis=0)[2:4]
-
             self.summary[n] = observable
 
     def get_observable(self):
-
         return self.summary[self.status.astype(bool)].reshape((-1,2))
-
-    def get_all(self):
-
-        return self.summary.reshape((-1, 2))
-
-    def change_transitions(self, transitions):
-        for zone, T in zip(self.residents.zones, transitions):
-            zone.transitions = T
-
-    def change_initialization(self, initializations):
-        for zone, i in zip(self.residents.zones, initializations):
-            zone.initial_states = i
 
     def reset(self):
         self.summary = np.zeros((self.n_screen, 2))
