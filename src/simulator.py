@@ -75,9 +75,6 @@ class Residents(MarkovChain):
         """
         initialization
 
-        @param transitions:     transition matrices fpr M neighbourhoods; [M, 2, n_state, n_state]
-        @param initial_states:  {'ID'  [n_population, n_state] } (one-hot)
-
         Parameters:
             transitions (np.ndarray): transition matrices for M neighbourhoods (zones); [M, 2, n_state, n_state]
             initial_states (dict):  corresponidng {'ID'  [initial]}

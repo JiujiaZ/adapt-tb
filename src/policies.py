@@ -1,15 +1,5 @@
 import numpy as np
-
-
-def logsumexp_trick(x):
-    """
-    For exp(x_i) / sum_i exp(x_i) avoid over flow
-    """
-
-    c = x.max()
-    y = c + np.log(np.sum(np.exp(x - c)))
-
-    return np.exp(x - y)
+from tools import logsumexp_trick
 
 class random_GEOTB():
 
