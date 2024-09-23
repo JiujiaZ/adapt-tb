@@ -1,5 +1,5 @@
 import numpy as np
-from tools import logsumexp_trick
+from src.tools import logsumexp_trick
 
 class random_GEOTB():
 
