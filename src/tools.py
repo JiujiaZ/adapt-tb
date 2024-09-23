@@ -60,6 +60,7 @@ def load_json_with_arrays(file_path):
 
     return convert_back_to_arrays(data)
 
+
 def check_and_load_dict(file_path):
     """
     Check if the file exists, if yes do nothing, else call script to generate data.
