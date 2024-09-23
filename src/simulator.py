@@ -169,11 +169,11 @@ class ScreenSites:
         self.status = actions
 
         # sample attendee
-        self.summary = np.zeros((self.n_screen, 2))  # for bandit algo
+        self.summary = np.zeros((self.n_sites, 2))  # for bandit algo
         screen_sites = np.where(self.status == 1)[0]  # place to go this week
 
         # loop over each screening sites, sample attendance:
-        summary = np.zeros((self.n_screen, self.n_residential))
+        summary = np.zeros((self.n_sites, self.n_residential))
 
         # determine attandee residential origin:
         for n in screen_sites:
@@ -199,6 +199,6 @@ class ScreenSites:
         return self.summary[self.status.astype(bool)].reshape((-1,2))
 
     def reset(self):
-        self.summary = np.zeros((self.n_screen, 2))
-        self.status = np.zeros(self.n_screen)
+        self.summary = np.zeros((self.n_sites, 2))
+        self.status = np.zeros(self.n_sites)
         self.residents.reset()
