@@ -177,7 +177,7 @@ def execute_model_fitting(r = 2, d = 0.43, time = 1000):
         delta = site_info[n]['delta']
 
         # check special condition:
-        if site_info[n]['pos'].sum():  # no TB detected
+        if site_info[n]['pos'].sum() == 0:  # no TB detected
             scale2 = 0.01/4
             scale1 = scale2 * r
             est_T = np.array([
