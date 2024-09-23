@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 import torch.nn as nn
-from tools import load_json_with_arrays, ensure_dir_exists
+from src.tools import load_json_with_arrays, ensure_dir_exists
 import pickle
 
 def reparameterize(Ts, r=1, option=1):
