@@ -116,7 +116,7 @@ def main():
     observed_data = load_json_with_arrays('data/input/observations.json')
 
     # Load schedules
-    with open('schedules.pkl', 'rb') as f:
+    with open('data/input/schedules.pkl', 'rb') as f:
         schedules = pickle.load(f)
 
     # Run validation
