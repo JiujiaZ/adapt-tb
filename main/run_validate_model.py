@@ -128,7 +128,7 @@ def main():
     # Save
     output_dir = 'data/output/validation/'
     ensure_dir_exists(output_dir)
-    np.savez_compressed(f'{output_dir}simulated_data_r{r}_d{int(d*100)}.npz', *simulated_data)
+    np.savez_compressed(f'{output_dir}simulated_data_r{r}_d{int(d*100)}.npz', matrix = simulated_data)
 
     # Plot results
     fig, ax = plt.subplots(figsize=(6, 4))
