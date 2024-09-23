@@ -112,7 +112,7 @@ def fit_transition(time, gap, delta, r, Ts, eps=1e-5):
     optim = torch.optim.Adam(Ts, lr=1e-3)
 
     for t in range(time):
-        print('t: ', t)
+        # print('t: ', t)
         optim.zero_grad()
 
         L = get_loss(gap, delta, r, Ts)
