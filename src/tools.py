@@ -1,6 +1,5 @@
 import numpy as np
 import json
-from pathlib import Path
 import os
 
 def logsumexp_trick(x):
