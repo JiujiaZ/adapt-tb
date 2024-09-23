@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 import torch.nn as nn
-from tools import load_json_with_arrays
+from tools import load_json_with_arrays, ensure_dir_exists
 import pickle
 
 def reparameterize(Ts, r=1, option=1):
@@ -231,6 +231,9 @@ def get_model_parameter(r = 2, d = 0.43):
     # save for later use
     save_name = 'parameters' + '_r' + str(r) + '_d' + str(int(d*100)) + '.pkl'
     save_path = 'data/parameters/'
+
+    ensure_dir_exists(save_path)
+
     with open(save_path+save_name, 'wb') as f:
         pickle.dump(parameters, f)
 

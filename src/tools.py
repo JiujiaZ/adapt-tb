@@ -1,5 +1,6 @@
 import numpy as np
 import json
+from pathlib import Path
 import os
 
 def logsumexp_trick(x):
@@ -60,6 +61,18 @@ def load_json_with_arrays(file_path):
 
     return convert_back_to_arrays(data)
 
+def ensure_dir_exists(directory):
+    """
+    Check if the directory exists, and if not, create it.
+
+    Parameters:
+        directory (str): Path to the directory.
+    """
+    if not os.path.exists(directory):
+        print(f"Directory '{directory}' does not exist. Creating it now.")
+        os.makedirs(directory)
+    else:
+        print(f"Directory '{directory}' already exists.")
 
 def check_and_load_dict(file_path):
     """
