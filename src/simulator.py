@@ -186,7 +186,7 @@ class ScreenSites:
         # determine detection outcome
         N = summary[screen_sites, :].sum(axis = 0).astype('int') # effective attandance
         for i in np.arange(self.n_zone):
-            if N >= 1:
+            if N[i] >= 1:
                 self.residents.step(i, 1)
             else:
                 self.residents.step(i, 0)
