@@ -164,7 +164,7 @@ def execute_model_fitting(r = 2, d = 0.43, time = 1000):
     site_info = load_json_with_arrays("data/input/site_info.json")
 
     sites = list(site_info.keys())
-    transitions = np.zeros([len(sites),2,5,5])
+    transitions = np.zeros((len(sites),2,5,5))
     records = dict()
     initial_states = dict()
     eps = (600 / 100000) / r
