@@ -6,12 +6,11 @@ class random_GEOTB():
     # random + historical high GEOTB
     # p = 0, fully random
 
-    def __init__(self, rb, env, K = 1, p = 0):
+    def __init__(self, sim, env, K = 1, p = 0):
 
-
-        self.rb = rb
+        self.sim = sim
         self.K = K
-        self.n_arms = rb.n_screen
+        self.n_arms = sim.n_screen
 
         # Features from environment:
         self.env = env
@@ -28,7 +27,7 @@ class random_GEOTB():
     def step(self):
 
         # update environment
-        self.env.update(self.rb)
+        self.env.update(self.sim)
         X = self.env.get_context()
 
         GEOTB_policy = np.random.binomial(n = 1, p = self.p)
@@ -44,15 +43,15 @@ class random_GEOTB():
         actions = np.zeros(self.n_arms, dtype=int)
         actions[indx] = 1
 
-        self.rb.step(actions=actions)
+        self.sim.step(actions=actions)
 
-        observation = self.rb.get_observable()  # [n_observe, 2]
+        observation = self.sim.get_observable()  # [n_observe, 2]
         self.cum_total_screened += observation.sum()
         self.cum_total_diagnosed += observation[:, 0].sum()
 
     def reset(self):
         self.env.reset()
-        self.rb.reset()
+        self.sim.reset()
 
         self.cum_total_screened = 0
         self.cum_total_diagnosed = 0
@@ -60,13 +59,10 @@ class random_GEOTB():
 
 
 class customize():
+    def __init__(self, sim, env):
 
-
-    def __init__(self, rb, env):
-
-
-        self.rb = rb
-        self.n_arms = rb.n_screen
+        self.sim = sim
+        self.n_arms = sim.n_screen
 
         # Features from environment:
         self.env = env
@@ -80,13 +76,13 @@ class customize():
         # schedule, one-hot like: send num bans to location
 
         # update environment
-        self.env.update(self.rb)
+        self.env.update(self.sim)
         # based on schedualling
         actions = schedule > 0
 
-        self.rb.step(actions=actions)
+        self.sim.step(actions=actions)
 
-        observation = self.rb.get_observable()  # [n_observe, 2]
+        observation = self.sim.get_observable()  # [n_observe, 2]
         # adjust for multiple vans
         observation = observation * schedule[actions].reshape(-1, 1)
         self.cum_total_screened += observation.sum()
@@ -94,25 +90,21 @@ class customize():
 
     def reset(self):
         self.env.reset()
-        self.rb.reset()
+        self.sim.reset()
 
         self.cum_total_screened = 0
         self.cum_total_diagnosed = 0
 
-        # for check sub optimality
-        self.temp_cum_total_screened = 0
-        self.temp_cum_total_diagnosed = 0
-        self.temp_pulls = list()
 
 class exp3():
 
-    def __init__(self, rb, env, T, K = 1, eta = 0.01):
+    def __init__(self, sim, env, T, K = 1, eta = 0.01):
 
         # decay historical reward
-        self.rb = rb
+        self.sim = sim
         self.env = env
         self.K = K
-        self.n_arms = rb.n_screen
+        self.n_arms = sim.n_screen
         self.p = np.ones( self.n_arms ) / self.n_arms
 
         # this is for internal update not the actual reward
@@ -123,22 +115,21 @@ class exp3():
         self.L = 100
         self.eta = np.sqrt(np.log(self.n_arms) / (T * self.n_arms * self.L**2))
 
-
         # for output
         self.cum_total_screened = 0
         self.cum_total_diagnosed = 0
 
     def step(self):
-        self.env.update(self.rb)
+        self.env.update(self.sim)
 
         indx = np.random.choice(self.n_arms, size=self.K, replace=False, p=self.p)
         actions = np.zeros(self.n_arms, dtype=int)
         actions[indx] = 1
 
-        self.rb.step(actions=actions)
+        self.sim.step(actions=actions)
 
 
-        observation = self.rb.get_observable()
+        observation = self.sim.get_observable()
         # for output
         self.cum_total_screened += observation.sum()
         self.cum_total_diagnosed += observation[:, 0].sum()
@@ -152,10 +143,10 @@ class exp3():
 
         # update: (avoiding messing up order)
         # get pulled arm
-        indx = np.where(self.rb.status)[0]
+        indx = np.where(self.sim.status)[0]
         # adjusted reward
         R_hat = np.zeros(self.n_arms)
-        # observed_states = self.rb.current_states[indx].argmax(axis=-1)
+        # observed_states = self.sim.current_states[indx].argmax(axis=-1)
         R_hat[indx] = self.reward / self.p[indx]
 
         # exp3 update:
@@ -166,9 +157,9 @@ class exp3():
         self.p = (1 - self.eta) * self.p + self.eta / self.n_arms
 
 
-    def reset(self,reset_rb = True):
-        if reset_rb :
-            self.rb.reset()
+    def reset(self,reset_sim = True):
+        if reset_sim :
+            self.sim.reset()
 
         self.p = np.ones(self.n_arms) / self.n_arms
         self.cum_reward = np.zeros(self.n_arms)
@@ -179,19 +170,19 @@ class exp3():
 
 class LinUCB():
 
-    def __init__(self, rb, env, T,  alpha = 1, lam = 1, K = 1, reg = None):
+    def __init__(self, sim, env, T,  alpha = 1, lam = 1, K = 1, reg = None):
 
         """
-        :param rb:
+        :param sim:
         :param env: Environment
         :param n_dims:
         :param K:
         """
 
 
-        self.rb = rb
+        self.sim = sim
         self.K = K
-        self.n_arms = rb.n_screen
+        self.n_arms = sim.n_screen
         # alpha: around high probability delta = 0.1
         self.alpha = alpha
         self.lam = lam
@@ -223,7 +214,7 @@ class LinUCB():
 
 
     def step(self):
-        self.env.update(self.rb)
+        self.env.update(self.sim)
         X = self.env.get_context()
 
         theta = np.zeros((self.n_arms, self.n_dims, 1))
@@ -246,8 +237,8 @@ class LinUCB():
         actions = np.zeros(self.n_arms, dtype=int)
         actions[indx] = 1
 
-        self.rb.step(actions=actions)
-        observation = self.rb.get_observable()  # [n_observe, 2]
+        self.sim.step(actions=actions)
+        observation = self.sim.get_observable()  # [n_observe, 2]
         # for output
         self.cum_total_screened += observation.sum()
         self.cum_total_diagnosed += observation[:, 0].sum()
@@ -259,7 +250,7 @@ class LinUCB():
 
 
         # get pulled arm
-        indx = np.where(self.rb.status)[0]
+        indx = np.where(self.sim.status)[0]
         # update: over each selected arm:
         for n, i in enumerate(indx):
             observe_feature = X[i].reshape((-1,1))
@@ -274,7 +265,7 @@ class LinUCB():
     def reset(self):
 
         self.env.reset()
-        self.rb.reset()
+        self.sim.reset()
 
         # self.A = np.tile(np.zeros((self.n_dims, self.n_dims)), (self.n_arms, 1, 1))
         self.A = np.tile(np.eye(self.n_dims) * self.lam, (self.n_arms, 1, 1))
