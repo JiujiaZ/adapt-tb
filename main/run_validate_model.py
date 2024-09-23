@@ -23,7 +23,7 @@ def run_validation(schedules, n_trials=10,
     # Run customized policy
     rewards = []
     for i in range(n_trials):
-        print(f'Trial {i+1}/{n_trials}')
+        print(f'Trial {i + 1}/{n_trials}')
         screening_sites.reset()
         environment.reset()
 
@@ -31,17 +31,17 @@ def run_validation(schedules, n_trials=10,
         for action in schedules:
             model.step(action)
             reward.append(np.array([model.cum_total_screened, model.cum_total_diagnosed]))
-        rewards.append(reward)
-    return rewards
+        rewards.append(np.array(reward))
+    return np.array(rewards)
 
 # Function to calculate coverage statistics
 def coverage_check(simulated_data, observed_data):
 
-    simulated_diff = [np.diff(np.array(trial)[:, :, 1]) / np.diff(np.array(trial)[:, :, 0]) for trial in simulated_data]
-    observed_diff = np.diff(np.array(observed_data)[:, :, 1]) / np.diff(np.array(observed_data)[:, :, 0])
+    simulated_diff = np.diff(simulated_data[:, :, 1]) / np.diff(simulated_data[:, :, 0])
+    observed_diff = (np.diff(observed_data[:, :, 1]) / np.diff(observed_data[:, :, 0])).reshape(-1)
 
-    simulated_mean = np.mean(simulated_diff[0], axis=0)
-    simulated_std = np.std(simulated_diff[0], axis=0)
+    simulated_mean = simulated_diff.mean(axis=0)
+    simulated_std = simulated_diff.std(axis=0)
     coverage_1std = (simulated_mean - simulated_std <= observed_diff) & (simulated_mean + simulated_std >= observed_diff)
     coverage_2std = (simulated_mean - 2 * simulated_std <= observed_diff) & (simulated_mean + 2 * simulated_std >= observed_diff)
 
@@ -52,11 +52,11 @@ def plot_validation(ax, simulated_data, observed_data, x_lim, y_lim, colors, r, 
     simulated_mean, simulated_std, per_1std, per_2std = coverage_check(simulated_data, observed_data)
 
     # Plot simulated raw data
-    for running in np.diff(np.array(simulated_data[0])[:, :, 1]) / np.diff(np.array(simulated_data[0])[:, :, 0]):
+    for running in np.diff(simulated_data[:, :, 1]) / np.diff(simulated_data[:, :, 0]):
         ax.scatter(np.arange(len(running)), running, label='simulated (raw)', color=colors[0])
 
     # Plot observed data
-    observed_diff = np.diff(np.array(observed_data)[:, :, 1]) / np.diff(np.array(observed_data)[:, :, 0])
+    observed_diff = (np.diff(observed_data[:, :, 1]) / np.diff(observed_data[:, :, 0])).reshape(-1)
     ax.scatter(np.arange(len(observed_diff)), observed_diff, label='observed', color=colors[1])
 
     # Plot mean of simulated data with error bars (1 standard deviation)
