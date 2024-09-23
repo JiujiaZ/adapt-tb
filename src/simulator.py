@@ -173,19 +173,19 @@ class ScreenSites:
         screen_sites = np.where(self.status == 1)[0]  # place to go this week
 
         # loop over each screening sites, sample attendance:
-        summary = np.zeros((self.n_sites, self.n_residential))
+        summary = np.zeros((self.n_sites, self.n_zone))
 
         # determine attandee residential origin:
         for n in screen_sites:
-            temp = np.random.choice(self.n_residential, int(self.N[n]) , replace=True, p=self.weights[n])
-            temp_count = np.zeros(self.n_residential)
+            temp = np.random.choice(self.n_zone, int(self.N[n]) , replace=True, p=self.weights[n])
+            temp_count = np.zeros(self.n_zone)
 
             temp_count[:len(np.bincount(temp))] += np.bincount(temp)
             summary[n] += temp_count
 
         # determine detection outcome
         N = summary[screen_sites, :].sum(axis = 0).astype('int') # effective attandance
-        for i in np.arange(self.n_residential):
+        for i in np.arange(self.n_zone):
             if N >= 1:
                 self.residents.step(i, 1)
             else:
