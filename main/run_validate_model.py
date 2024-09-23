@@ -26,6 +26,7 @@ def run_validation(schedules, n_trials=10,
         print(f'Trial {i + 1}/{n_trials}')
         screening_sites.reset()
         environment.reset()
+        model.reset()
 
         reward = list()
         for action in schedules:
