@@ -10,7 +10,7 @@ class random_GEOTB():
 
         self.sim = sim
         self.K = K
-        self.n_arms = sim.n_screen
+        self.n_arms = sim.n_sites
 
         # Features from environment:
         self.env = env
@@ -62,7 +62,7 @@ class customize():
     def __init__(self, sim, env):
 
         self.sim = sim
-        self.n_arms = sim.n_screen
+        self.n_arms = sim.n_sites
 
         # Features from environment:
         self.env = env
@@ -104,7 +104,7 @@ class exp3():
         self.sim = sim
         self.env = env
         self.K = K
-        self.n_arms = sim.n_screen
+        self.n_arms = sim.n_sites
         self.p = np.ones( self.n_arms ) / self.n_arms
 
         # this is for internal update not the actual reward
@@ -182,7 +182,7 @@ class LinUCB():
 
         self.sim = sim
         self.K = K
-        self.n_arms = sim.n_screen
+        self.n_arms = sim.n_sites
         # alpha: around high probability delta = 0.1
         self.alpha = alpha
         self.lam = lam
