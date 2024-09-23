@@ -1,8 +1,8 @@
 import numpy as np
 import torch
 import torch.nn as nn
-import json
 from tools import load_json_with_arrays
+import pickle
 
 def reparameterize(Ts, r=1, option=1):
 
@@ -215,5 +215,25 @@ def execute_model_fitting(r = 2, d = 0.43, time = 1000):
 
     return transitions, records, initial_states
 
+def get_model_parameter(r = 2, d = 0.43):
+
+    print(f"Model fitting: r = {r}, d = {d}")
+    transitions, _, initial_states = execute_model_fitting(r = r, d = d)
+    A = load_json_with_arrays("data/input/A_potential.json")
+    pi = load_json_with_arrays("data/input/travel_pi.json")
+
+    parameters = {'transitions': transitions,
+                  'initial_states': initial_states,
+                  'A_potential': A,
+                  'travel_pi': pi
+                  }
+
+    # save for later use
+    save_name = 'parameters' + '_r' + str(r) + '_d' + str(int(d*100)) + '.pkl'
+    save_path = 'data/parameters/'
+    with open(save_path+save_name, 'wb') as f:
+        pickle.dump(parameters, f)
+
+    print(f"Saved Model Parameters: r = {r}, d = {d}")
 
 
