@@ -98,7 +98,7 @@ class customize():
 
 class exp3():
 
-    def __init__(self, sim, env, T, K = 1, eta = 0.01):
+    def __init__(self, sim, env, T, K = 1):
 
         # decay historical reward
         self.sim = sim
