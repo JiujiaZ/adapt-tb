@@ -43,7 +43,7 @@ class Envrionment():
         return np.vstack((tau, self.prev_yields)).T
 
 
-    def update(self, rb):
+    def update(self, sim):
         """
 
         @param n_arm:      observable arm
@@ -51,12 +51,12 @@ class Envrionment():
         @return:
         """
         if self.t > 0:
-            self.observable_arm = rb.status
+            self.observable_arm = sim.status
             arm_indx = self.observable_arm.astype(bool)
 
             self.latest_visit[arm_indx] = self.t
             self.historical_pulled.append(np.where(arm_indx)[0])
-            observable_summary = rb.get_observable() # [n_arm, 2]
+            observable_summary = sim.get_observable() # [n_arm, 2]
 
             # replace None:
             self.prev_yields[arm_indx] = observable_summary[:, 0]/observable_summary.sum(axis = 1) #[n_arms, ]
