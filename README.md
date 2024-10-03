@@ -7,15 +7,19 @@ This is code repository for adapt-tb.
 1. Clone the repository:
    ```bash
    git clone https://github.com/JiujiaZ/adapt-tb.git
+   ```
 2. Navigate to the repository directory:
    ```bash
    cd adapt-tb
+   ```
 
 ## Usage:
-We use K, r, d to denote # units, ratio between $s^+$ and $s^-$, missing percentage.
-Current version supports K: 1, 2, 3, 4
-                         r: 1, 2, 3, 4, 5
-                         d: 0.33, 0.43
+We use K, r, d to denote # units, latter two model parameters.
+
+Current version supports:
+- K: 1, 2, 3, 4
+- r: 1, 2, 3, 4, 5
+- d: 0.33, 0.43
                         
 1. Run model parameter fitting:
   ``` bash
