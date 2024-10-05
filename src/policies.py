@@ -278,3 +278,79 @@ class LinUCB():
         self.cum_total_screened = 0
         self.cum_total_diagnosed = 0
 
+
+
+class ThompsonSampling():
+    def __init__(self, sim, env, T, alpha=1, beta=1, K=1, prior = None):
+        """
+
+        Parameters:
+        alpha: float
+            Alpha parameter for the Beta prior (successes).
+        beta: float
+            Beta parameter for the Beta prior (failures).
+        prior: [Total, success]
+        """
+
+
+        self.sim = sim
+        self.K = K
+        self.n_arms = sim.n_sites
+
+        self.alpha = np.ones(self.n_arms) * alpha  # successes
+        self.beta = np.ones(self.n_arms) * beta  # failures
+        self.prior = prior
+        if self.prior is not None:
+            self.alpha += self.prior[:,1]
+            self.beta += self.prior[:,0] - self.prior[:,1]
+
+        self.env = env
+        self.n_dims = env.n_dims
+
+        self.t = 1
+
+        self.cum_total_screened = 0
+        self.cum_total_diagnosed = 0
+
+    def step(self):
+
+        self.env.update(self.sim)
+        p = np.random.beta(self.alpha, self.beta)
+        indx = np.argsort(p)[-self.K:]
+
+        # set action
+        actions = np.zeros(self.n_arms, dtype=int)
+        actions[indx] = 1
+
+        self.sim.step(actions=actions)
+        observation = self.sim.get_observable()  # [n_observe, 2] [ +, - ]
+        # for output
+        self.cum_total_screened += observation.sum()
+        self.cum_total_diagnosed += observation[:, 0].sum()
+
+        # update: over each selected arm:
+        for n, i in enumerate(indx):
+
+            self.alpha[i] += observation[n,0]  # update successes
+            self.beta[i] += observation[n,1]  # update failures
+
+        self.t += 1
+
+    def reset(self):
+
+        self.alpha = np.ones(self.n_arms)
+        self.beta = np.ones(self.n_arms)
+        if self.prior is not None:
+            self.alpha += self.prior[:,1]
+            self.beta += self.prior[:,0] - self.prior[:,1]
+
+        self.env.reset()
+        self.sim.reset()
+
+        self.t = 1
+
+        self.cum_total_screened = 0
+        self.cum_total_diagnosed = 0
+
+
+

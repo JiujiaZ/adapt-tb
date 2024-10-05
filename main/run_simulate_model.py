@@ -8,7 +8,7 @@ from src.policies import *
 from src.Environment import *
 from src.tools import *
 
-def run_policy(K = 4, T = 102, n_trials = 10, method = 'random', site_reg = None,
+def run_policy(K = 4, T = 102, n_trials = 10, method = 'random', site_reg = None, prior = None,
                    transitions=None, initial_states=None, N=None, weights=None, features=None, features_name=None):
 
     """
@@ -23,8 +23,8 @@ def run_policy(K = 4, T = 102, n_trials = 10, method = 'random', site_reg = None
 
     """
     # valid method check
-    if method not in ['random','historic TB rates','exp3', 'LinUCB']:
-        raise ValueError("method must be one of: 'random','historic TB rates','exp3', 'LinUCB'.")
+    if method not in ['random','historic TB rates','exp3', 'LinUCB', 'TS']:
+        raise ValueError("method must be one of: 'random','historic TB rates','exp3', 'LinUCB', 'TS")
 
     # initialize bandit:
     residents = Residents(transitions=transitions, initial_states=initial_states)
@@ -39,6 +39,8 @@ def run_policy(K = 4, T = 102, n_trials = 10, method = 'random', site_reg = None
         model = random_GEOTB(screening_sites, environment, K=K, p=0)
     elif method == 'historic TB rates':
         model = random_GEOTB(screening_sites, environment, K=K, p=1)
+    elif method == 'TS':
+        model = ThompsonSampling(screening_sites, environment, T, alpha=1, beta=1, K=K, prior = prior)
 
     # run specified policy:
     rewards = []
@@ -56,13 +58,13 @@ def run_policy(K = 4, T = 102, n_trials = 10, method = 'random', site_reg = None
     return np.array(rewards)
 
 # run all multi-policies with same K, T, model params
-def run_simulation(K = 4, T = 102, n_trials = 10, methods = ['random'], site_reg = None,
+def run_simulation(K = 4, T = 102, n_trials = 10, methods = ['random'], site_reg = None, prior = None,
                    transitions=None, initial_states=None, N=None, weights=None, features=None, features_name=None):
 
     simulated_data = dict()
     for method in methods:
         print(f'Running {method}')
-        data = run_policy(K=K, T=T, n_trials=n_trials, method=method, site_reg=site_reg,
+        data = run_policy(K=K, T=T, n_trials=n_trials, method=method, site_reg=site_reg, prior = prior,
                           transitions=transitions, initial_states=initial_states, N=N, weights=weights, features=features, features_name=features_name)
         simulated_data[method] = data
 
@@ -176,14 +178,18 @@ def main():
     with open(params_file, 'rb') as f:
         site_reg = pickle.load(f)
 
+    # load prior
+    params_file = f'data/input/prior.pkl'
+    with open(params_file, 'rb') as f:
+        prior = pickle.load(f)
 
     # specify methods and run simulation
-    methods = ['random','historic TB rates','exp3', 'LinUCB']
-    simulated_data = run_simulation(K = K, T = 156, n_trials = 1000, methods = methods, site_reg = site_reg,
+    methods = ['random','historic TB rates','exp3', 'LinUCB', 'TS']
+    simulated_data = run_simulation(K = K, T = 156, n_trials = 1000, methods = methods, site_reg = site_reg, prior = prior,
                                     transitions=transitions, initial_states=initial_states, N=A, weights=pi, features=features, features_name=features_name)
 
     # Save
-    output_dir = 'data/output/simulation/'
+    output_dir = 'data/output/simulation/test/'
     ensure_dir_exists(output_dir)
     np.savez_compressed(f'{output_dir}simulated_data_K{K}_r{r}_d{int(d * 100)}.npz', **simulated_data)
 
@@ -191,7 +197,7 @@ def main():
     fig, ax = plt.subplots(figsize=(6, 4))
     plot_simulation(ax, K, r, d, simulated_data)
     # Save the figure
-    figure_dir = 'results/simulation/'
+    figure_dir = 'results/simulation/test/'
     ensure_dir_exists(figure_dir)
     plt.savefig(f'{figure_dir}simulation_K{K}_r{r}_d{int(d * 100)}.png', bbox_inches='tight')
     plt.close()
