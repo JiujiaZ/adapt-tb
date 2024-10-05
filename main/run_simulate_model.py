@@ -133,7 +133,7 @@ def main():
     # Define K, r, and d values based on task_id if not provided as arguments
     K_values = [1, 2, 3, 4]
     r_values = [1, 2, 3, 4, 5]
-    d_values = [0.33, 0.43]
+    d_values = [0.33, 0.43, 0.53, 0.63, 0.73]
 
     if args.K is None or args.r is None or args.d is None:
         # Calculate indices based on task_id

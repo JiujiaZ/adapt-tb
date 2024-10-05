@@ -14,7 +14,7 @@ def main():
 
     # Default values for r and d arrays
     r_values = [1, 2, 3, 4, 5]
-    d_values = [0.33, 0.43]
+    d_values = [0.33, 0.43, 0.53, 0.63, 0.73]
 
     # Check if the script is running in an SGE environment (i.e., SGE_TASK_ID)
     if "SGE_TASK_ID" in os.environ:

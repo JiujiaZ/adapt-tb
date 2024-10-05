@@ -149,7 +149,7 @@ def fit_transition(time, gap, delta, r, Ts, eps=1e-5):
     return transitions, flag, grads_norm.item(), missing_per
 
 
-def bi_section_fitting(time, gap, delta, r, gamma, d_lb, d_ub, d_target, eps=0.5, max_iter=10):
+def bi_section_fitting(time, gap, delta, r, gamma, d_lb, d_ub, d_target, eps=0.5, max_iter=20):
     # flag = 1
 
     for i in range(max_iter):
@@ -256,7 +256,7 @@ def execute_model_fitting(r = 2, d_range = [0.03, 0.3], d_target = 43, time = 10
 
     return transitions, records, initial_states
 
-def get_model_parameter(r = 2, d = 0.43, d_range = [0.03, 0.3]):
+def get_model_parameter(r = 2, d = 0.43, d_range = [0.0, 1.0]):
 
     print(f"Model fitting: r = {r}, d = {d}")
     transitions, _, initial_states = execute_model_fitting(r = r, d_range = d_range, d_target = d * 100)

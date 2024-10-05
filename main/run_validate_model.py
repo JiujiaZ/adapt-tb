@@ -85,7 +85,7 @@ def main():
 
     # Define r and d values based on task_id if not provided as arguments
     r_values = [1, 2, 3, 4, 5]
-    d_values = [0.33, 0.43]
+    d_values = [0.33, 0.43, 0.53, 0.63, 0.73]
 
     if args.r is None or args.d is None:
         r_index = (task_id - 1) % len(r_values)
