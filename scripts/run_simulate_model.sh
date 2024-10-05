@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
-# Request array job with 10 tasks (one task per combination of K, r and d)
-#$ -t 1-40
+# Request array job with multiple tasks (one task per combination of K, r and d)
+#$ -t 1-100
 # Request 1 core per task
 #$ -pe omp 1
 # Set runtime limit
@@ -14,10 +14,11 @@
 
 module load python3/3.10.12
 export PYTHONPATH=$PYTHONPATH:/projectnb/aclab/jiujiaz/adapt-tb
+source /projectnb/aclab/jiujiaz/adapt-tb/venv/bin/activate
 
 # Array of r,d,K values
 r_values=(1 2 3 4 5)
-d_values=(0.33 0.43)
+d_values=(0.33 0.43 0.53 0.63 0.73)
 K_values=(1 2 3 4)
 
 # Calculate total number of combinations
