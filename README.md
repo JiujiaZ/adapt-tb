@@ -52,7 +52,5 @@ This saves raw output from simulation as data/output/simulation/simulated_data_K
 A plot is also generated using raw data being saved to results/simulation/simulation_K<K>_r<r>_d<d*100>.png
 
 ### Runtime Estimate
-- Tasks typically take less than 5 minutes, 20 minutes, or up to 2 hours for each run, depending on the configuration.
+- Tasks typically take less than 20 minutes, 20 minutes, or up to 4 hours for each run, depending on the configuration.
 
-## License
-This repository is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0) – see the [LICENSE](https://creativecommons.org/licenses/by/4.0/) file for details.
