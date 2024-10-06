@@ -54,5 +54,4 @@ A plot is also generated using raw data being saved to results/simulation/simula
 ### Runtime Estimate
 - Tasks typically take less than 20 minutes, 20 minutes, or up to 4 hours for each run, depending on the configuration.
 
-## License
-This repository is licensed under the Creative Commons Attribution 4.0 International License (CC BY 4.0) – see the [LICENSE](https://creativecommons.org/licenses/by/4.0/) file for details.
+
