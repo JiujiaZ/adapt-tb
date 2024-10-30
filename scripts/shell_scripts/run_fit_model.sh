@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
-# Request array job with 10 tasks (one task per combination of r and d)
-#$ -t 1-10
+# Request array job
+#$ -t 1-15
 # Request 1 core per task
 #$ -pe omp 1
 # Set runtime limit
@@ -9,19 +9,20 @@
 # Join output and error streams
 #$ -j y
 # Give the job a name
-#$ -N model_validation_job
+#$ -N model_fit_job
 
 
 module load python3/3.10.12
 export PYTHONPATH=$PYTHONPATH:/projectnb/aclab/jiujiaz/adapt-tb
+source /projectnb/aclab/jiujiaz/adapt-tb/venv/bin/activate
 
 # Array of r values
 r_values=(1 2 3 4 5)
 
 # Array of d values
-d_values=(0.33 0.43)
+d_values=(0.23 0.33 0.43)
 
-# Calculate total number of combinations (5 r values * 2 d values = 10 combinations)
+# Calculate total number of combinations
 total_combinations=$((${#r_values[@]} * ${#d_values[@]}))
 
 # Ensure SGE_TASK_ID is within bounds (1 <= SGE_TASK_ID <= total_combinations)
@@ -40,7 +41,7 @@ d=${d_values[$d_index]}
 echo "Running model for r=$r, d=$d (SGE_TASK_ID=$SGE_TASK_ID)"
 
 # Run the Python script with the selected r and d
-python3 main/run_validate_model.py --r $r --d $d
+python3 main/run_fit_model.py --r $r --d $d
 
 # Check if the Python script ran successfully
 if [ $? -ne 0 ]; then

@@ -12,7 +12,7 @@ This is code repository for adapt-tb.
    cd adapt-tb
    ```
 ## Requirements
-- Python 3.10.12 or upto 3.11
+- Python 3.10.12 or later
 - All dependencies listed in `requirements.txt`
 
 ## Set up Environment
@@ -27,7 +27,7 @@ We use K, r, d to denote # units, latter two are associated model parameters.
 Current version supports:
 - K: 1, 2, 3, 4
 - r: 1, 2, 3, 4, 5
-- d: 0.33, 0.43
+- d: 0.23, 0.33, 0.43
                         
 1. Run model parameter fitting:
   ``` bash
