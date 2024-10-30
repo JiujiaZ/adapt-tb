@@ -1,0 +1,16 @@
+/projectnb/aclab/jiujiaz/adapt-tb/scripts/post_processing/generate_table.py:19: RuntimeWarning: divide by zero encountered in divide
+  ref_mean = (data[ref][:, :, 0] / data[ref][:, :, 1]).mean(axis = 0)
+/projectnb/aclab/jiujiaz/adapt-tb/scripts/post_processing/generate_table.py:21: RuntimeWarning: divide by zero encountered in divide
+  query_mean = (data[query][:, :, 0] / data[query][:, :, 1]).mean(axis = 0)
+/projectnb/aclab/jiujiaz/adapt-tb/scripts/post_processing/generate_table.py:32: RuntimeWarning: invalid value encountered in subtract
+  ratio = (ref_mean - query_mean) / ref_mean
+/projectnb/aclab/jiujiaz/adapt-tb/scripts/post_processing/generate_table.py:32: RuntimeWarning: invalid value encountered in divide
+  ratio = (ref_mean - query_mean) / ref_mean
+Traceback (most recent call last):
+  File "/projectnb/aclab/jiujiaz/adapt-tb/scripts/post_processing/generate_table.py", line 57, in <module>
+    main()
+  File "/projectnb/aclab/jiujiaz/adapt-tb/scripts/post_processing/generate_table.py", line 48, in main
+    result = export_summaries(K, r, d, queries = queries)
+  File "/projectnb/aclab/jiujiaz/adapt-tb/scripts/post_processing/generate_table.py", line 34, in export_summaries
+    peak_percentage = int(round(ratio[peak_week - 1] * 100))
+ValueError: cannot convert float NaN to integer

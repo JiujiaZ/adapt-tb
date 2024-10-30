@@ -7,7 +7,7 @@
 # Join output and error streams
 #$ -j y
 # Give the job a name
-#$ -N post_process_table
+#$ -N post_process_figure
 
 module load python3/3.10.12
 export PYTHONPATH=$PYTHONPATH:/projectnb/aclab/jiujiaz/adapt-tb

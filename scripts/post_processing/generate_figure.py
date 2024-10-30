@@ -39,7 +39,7 @@ def make_subplot(ax, data, title, x_lim, colors, x_label = True):
         ax.set_xlabel('Weeks')
     ax.set_title(title)
 
-def make_mainplot(r = 2, d = 0.43):
+def main(r = 2, d = 0.43):
 
     Ks = [1, 2, 3, 4]
     nrows, ncols = 2, 2
