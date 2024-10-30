@@ -67,7 +67,9 @@ The main 4 panel figure with r,d = 2, 0.43 and K = [1,2,3,4] are saved as 'scrip
   ``` bash
   python scripts/post_processig/generate_figure.py
   ```
-A Table to compute summary on performance comparison for each of the experiment specification are saved as 'scripts/post_processig/simulation_results.csv'
+A Table to compute summary on performance comparison for each of the experiment specification are saved as 'scripts/post_processig/performance_benchmark.csv'
+
+A Table to compute summary on screening total and positives found throughout the simulation for each of the experiment specification are saved as 'scripts/post_processig/screening_summary.csv'
 
 
 
