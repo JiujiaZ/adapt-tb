@@ -50,6 +50,29 @@ def export_summaries(K = 2, r = 2, d = 0.43, ref = 'historic TB rates', queries 
 
     return results
 
+def export_totals(K = 2, r = 2, d = 0.43):
+    read_dir = 'data/output/simulation/'
+    data = np.load(
+        f'{read_dir}simulated_data_K{K}_r{r}_d{int(d * 100)}.npz')  # ['method] [# repeats, # weeks, total, + ] cummulatively
+
+    results = {
+        'K': K,
+        'r': r,
+        'd': d
+    }
+
+    for query in data.keys():
+        query_total = query_data.sum(axis = 1)[:, 0]
+        query_pos = query_data.sum(axis=1)[:, 1]
+
+        results[f'{query} total_mean'] = round(int(query_total.mean()))
+        results[f'{query} total_std'] = round(int(query_total.std()))
+        results[f'{query} pos_mean'] = round(int(query_pos.mean()))
+        results[f'{query} pos_std'] = round(int(query_pos.std()))
+
+    return results
+
+
 
 def main(Ks = [1,2,3,4], rs = [1,2,3,4,5], ds = [0.23, 0.33, 0.43], queries = ['exp3', 'LinUCB']):
     results = []
@@ -61,9 +84,18 @@ def main(Ks = [1,2,3,4], rs = [1,2,3,4,5], ds = [0.23, 0.33, 0.43], queries = ['
     df = pd.DataFrame(results)
 
     save_dir = 'scripts/post_processing/'
-    df.to_csv(save_dir + 'simulation_results.csv', index=False)
+    df.to_csv(save_dir + 'performance_benchmark.csv', index=False)
 
-    # df.to_excel(save_dir + 'simulation_results.xlsx', index=False)
+    results = []
+    for K in Ks:
+        for r in rs:
+            for d in ds:
+                result = export_totals(K, r, d)
+                results.append(result)
+    df = pd.DataFrame(results)
+
+    save_dir = 'scripts/post_processing/'
+    df.to_csv(save_dir + 'screening_summary.csv', index=False)
 
 if __name__ == "__main__":
     main()

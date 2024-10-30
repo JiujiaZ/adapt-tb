@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8a45692b-8367-4780-9312-dea877f22164" name="Changes" comment="add post_processing scripts, add sim params">
-      <change afterPath="$PROJECT_DIR$/scripts/post_processing/main_result.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/post_processing/simulation_results.csv" afterDir="false" />
+    <list default="true" id="8a45692b-8367-4780-9312-dea877f22164" name="Changes" comment="update post_processing res">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_process_table.o874009" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_process_table.o874106" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/post_processing/generate_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/post_processing/generate_figure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/post_processing/generate_table.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/post_processing/generate_table.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/post_processing/simulation_results.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -243,7 +240,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730265305120</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="update post_processing res">
+      <option name="closed" value="true" />
+      <created>1730307885581</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1730307885581</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -276,6 +281,7 @@
     <MESSAGE value="add simulation sh" />
     <MESSAGE value="test requirement" />
     <MESSAGE value="add post_processing scripts, add sim params" />
-    <option name="LAST_COMMIT_MESSAGE" value="add post_processing scripts, add sim params" />
+    <MESSAGE value="update post_processing res" />
+    <option name="LAST_COMMIT_MESSAGE" value="update post_processing res" />
   </component>
 </project>

@@ -54,3 +54,21 @@ A plot is also generated using raw data being saved to results/simulation/simula
 ### Runtime Estimate
 - Tasks typically take less than 20 minutes, 20 minutes, or up to 4 hours for each run, depending on the configuration.
 
+## Post Processing:
+Raw output from 'data/output/simulation/' are further processed as a 4 panel figure to be presented in the Manuscript.
+
+1. Table Generation:
+  ``` bash
+  python scripts/post_processig/generate_table.py
+  ```
+The main 4 panel figure with r,d = 2, 0.43 and K = [1,2,3,4] are saved as 'scripts/post_processig/main_results.png' 
+
+2. Figure Generation:
+  ``` bash
+  python scripts/post_processig/generate_figure.py
+  ```
+A Table to compute summary on performance comparison for each of the experiment specification are saved as 'scripts/post_processig/simulation_results.csv'
+
+
+
+
