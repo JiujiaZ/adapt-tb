@@ -99,3 +99,7 @@ def main(r = 2, d = 0.43):
     plt.savefig(save_dir + save_name, bbox_inches='tight')
     plt.close()
 
+
+if __name__ == "__main__":
+    main()
+
