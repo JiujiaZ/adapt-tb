@@ -55,22 +55,24 @@ A plot is also generated using raw data being saved to results/simulation/simula
 - Tasks typically take less than 20 minutes, 20 minutes, or up to 4 hours for each run, depending on the configuration.
 
 ## Post Processing:
-Raw output from 'data/output/simulation/' are further processed as a 4 panel figure to be presented in the Manuscript.
+Raw output from 'data/output/simulation/' are further processed for presentation in the Manuscript.
 
 1. Table Generation:
   ``` bash
   python scripts/post_processig/generate_table.py
   ```
-The main 4 panel figure with r,d = 2, 0.43 and K = [1,2,3,4] are saved as 'scripts/post_processig/main_results.png' 
+A table to compute summary on screening yields at the end of simulation for each of the experiment specification are saved as 'scripts/post_processig/screening_yields.csv' (quoted figures in abstract)
+
+A Table to compute summary on performance comparison for each of the experiment specification are saved as 'scripts/post_processig/performance_benchmark.csv' (relative performance in time appeared in Table 2)
+
+A Table to compute summary on screening total and positives found throughout the simulation for each of the experiment specification are saved as 'scripts/post_processig/screening_summary.csv' (screening summaries as appeared in Table 3)
+
+
+
 
 2. Figure Generation:
   ``` bash
   python scripts/post_processig/generate_figure.py
   ```
-A Table to compute summary on performance comparison for each of the experiment specification are saved as 'scripts/post_processig/performance_benchmark.csv'
-
-A Table to compute summary on screening total and positives found throughout the simulation for each of the experiment specification are saved as 'scripts/post_processig/screening_summary.csv'
-
-
-
+The main 4 panel figure with r,d = 2, 0.43 and K = [1,2,3,4] are saved as 'scripts/post_processig/main_results.png' 
 

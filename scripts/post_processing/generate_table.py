@@ -13,7 +13,7 @@ def find_exceeding_week(ref_mean, query_mean):
     return -1  # Return -1 if no such week exists
 
 
-def export_summaries(K = 2, r = 2, d = 0.43, ref = 'historic TB rates', queries = ['exp3', 'LinUCB']):
+def export_comparsion_summaries(K = 2, r = 2, d = 0.43, ref = 'historic TB rates', queries = ['exp3', 'LinUCB']):
 
     # methods = ['random', 'historic TB rates', 'exp3', 'LinUCB']
 
@@ -62,6 +62,8 @@ def export_totals(K = 2, r = 2, d = 0.43):
     }
 
     for query in data.keys():
+        query_data = data[query]
+
         query_total = query_data.sum(axis = 1)[:, 0]
         query_pos = query_data.sum(axis=1)[:, 1]
 
@@ -72,6 +74,29 @@ def export_totals(K = 2, r = 2, d = 0.43):
 
     return results
 
+def export_yields(K = 2, r = 2, d = 0.43):
+    read_dir = 'data/output/simulation/'
+    data = np.load(
+        f'{read_dir}simulated_data_K{K}_r{r}_d{int(d * 100)}.npz')  # ['method] [# repeats, # weeks, total, + ] cummulatively
+
+    results = {
+        'K': K,
+        'r': r,
+        'd': d
+    }
+
+    for query in data.keys():
+        query_data = data[query]
+
+        query_yield = query_data[:, -1, 0] / query_data[:, -1, 1]
+
+        query_mean = query_yield.mean()
+        query_std = query_yield.std()
+
+        results[f'{query} yield_mean'] = round(int(query_mean))
+        results[f'{query} yield_std'] = round(int(query_std))
+
+    return results
 
 
 def main(Ks = [1,2,3,4], rs = [1,2,3,4,5], ds = [0.23, 0.33, 0.43], queries = ['exp3', 'LinUCB']):
@@ -79,7 +104,7 @@ def main(Ks = [1,2,3,4], rs = [1,2,3,4,5], ds = [0.23, 0.33, 0.43], queries = ['
     for K in Ks:
         for r in rs:
             for d in ds:
-                result = export_summaries(K, r, d, queries = queries)
+                result = export_comparsion_summaries(K, r, d, queries = queries)
                 results.append(result)
     df = pd.DataFrame(results)
 
@@ -96,6 +121,16 @@ def main(Ks = [1,2,3,4], rs = [1,2,3,4,5], ds = [0.23, 0.33, 0.43], queries = ['
 
     save_dir = 'scripts/post_processing/'
     df.to_csv(save_dir + 'screening_summary.csv', index=False)
+
+    results = []
+    for K in Ks:
+        for r in rs:
+            for d in ds:
+                result = export_yields(K, r, d)
+                results.append(result)
+    df = pd.DataFrame(results)
+    save_dir = 'scripts/post_processing/'
+    df.to_csv(save_dir + 'screening_yields.csv', index=False)
 
 if __name__ == "__main__":
     main()
